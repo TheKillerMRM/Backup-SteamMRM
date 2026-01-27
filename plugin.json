@@ -1,0 +1,13 @@
+{
+  "name": "BackupSteamMRM",
+  "common_name": "Backup SteamMRM",
+  "description": "Automação de Backup e Restore Inteligente para Steam",
+  "author": "TheKillerMRM",
+  "version": "4.0.0",
+  "has_backend": true,
+  "main": "main.py",
+  "include": [
+    "public",
+    "backend"
+  ]
+}
