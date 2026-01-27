@@ -25,11 +25,13 @@ Precisa de um backup manual ou quer gerenciar saves específicos? Use o novo bot
 | :--- | :--- |
 | 🕵️ **Monitoramento Passivo** | Detecta automaticamente o encerramento de processos de jogos (AppID). Zero impacto na performance. |
 | 🎮 **Integração Ludusavi** | Motor de backup de saves integrado. Acesse a interface completa com um botão dedicado. |
-| 📦 **Backup Cirúrgico** | Salva apenas o que importa (userdata, stats, cache, configs), ignorando o "lixo" temporário. |
+| 🎨 **Customização Visual** | Altere as cores da interface e o tema principal para combinar com seu setup. |
+| 🌍 **Multi-idioma** | Suporte total para troca de idiomas (Português e Inglês). |
 | 🔄 **Time Travel (Restore)** | Restaure backups antigos instantaneamente através de uma interface visual integrada. |
+| 🧹 **Auto-Cleanup** | Mantenha o controle total: defina o número máximo de backups para gerenciar seu espaço. |
+| 📦 **Backup Cirúrgico** | Salva apenas o que importa (userdata, stats, cache, configs), ignorando o "lixo" temporário. |
 | 🔔 **Notificações Nativas** | Feedback visual discreto via Windows Toast ao concluir operações. |
 | 🗃️ **Histórico Organizado** | Cria pastas timestamped para você voltar no tempo quando quiser. |
-| 🧹 **Auto-Cleanup** | Gerenciamento inteligente de espaço: mantém apenas os backups mais recentes (configurável). |
 
 ---
 
