@@ -1,11 +1,7 @@
 <div align="center">
 
-# 🟣 Backup SteamMRM 🟣 
+# ✅ Backup SteamMRM ✅ 
 
-
-<p align="center">
-  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3BxdGp6Z3V4ZnV4ZnV4ZnV4ZnV4ZnV4ZnV4ZnV4ZnV4ZnV4eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LMcB8XjhG7ck/giphy.gif" width="100%" height="4" alt="divider">
-</p>
 
 <h3>Proteja seu legado. Viaje no tempo.</h3>
 
