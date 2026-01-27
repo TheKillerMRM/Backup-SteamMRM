@@ -45,10 +45,10 @@ No canto inferior direito da sua Steam, procure pelo **Botão Roxo com Ícone de
 </div>
 
 ### 2. Escolha o Ponto de Restauração
-Ao clicar, uma lista com todos os seus backups organizados por data irá aparecer. Basta selecionar o momento para o qual deseja voltar.
+Ao clicar, uma lista com todos os seus backups organizados por data irá aparecer. Basta selecionar o momento para o qual deseja voltar. Você também encontrará o botão **"Abrir o Ludusavi"** nesta tela.
 
 <div align="center">
-  <img src="https://i.imgur.com/wRipSZq.png" alt="Menu de Restore" width="50%">
+  <img src="https://i.imgur.com/3eMjHhO.png" alt="Menu de Restore e Ludusavi" width="60%">
 </div>
 
 ### 3. Confirmação Visual
