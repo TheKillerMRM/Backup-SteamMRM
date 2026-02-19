@@ -3,7 +3,7 @@
   "common_name": "Backup SteamMRM",
   "description": "Automação de Backup e Restore Inteligente para Steam",
   "author": "TheKillerMRM",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "has_backend": true,
   "main": "main.py",
   "include": [

@@ -14,7 +14,7 @@ from tkinter import filedialog, ttk
 
 # ─── CONSTANTS ───────────────────────────────────────────────────────
 APP_NAME = "Backup SteamMRM"
-VERSION  = "v5.0.0"
+VERSION  = "v5.0.1"
 PLUGIN_FOLDER = "Backup SteamMRM"
 ASSETS = ['backend', 'public', 'ludusavi', 'main.py', 'plugin.json', 'settings.json']
 
