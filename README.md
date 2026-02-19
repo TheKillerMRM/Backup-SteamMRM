@@ -51,7 +51,7 @@ No canto inferior direito da sua Steam, procure pelo **Botão Roxo com Ícone de
 Ao clicar, uma lista com todos os seus backups organizados por data irá aparecer. Basta selecionar o momento para o qual deseja voltar. Você também encontrará o botão **"Abrir o Ludusavi"** nesta tela.
 
 <div align="center">
-  <img src="https://i.imgur.com/3eMjHhO.png" alt="Menu de Restore e Ludusavi" width="60%">
+  <img src="https://i.imgur.com/mFlVZmb.png" alt="Menu de Restore e Ludusavi" width="60%">
 </div>
 
 ### 3. Confirmação Visual
