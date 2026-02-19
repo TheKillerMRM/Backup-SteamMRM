@@ -1,4 +1,4 @@
-# Backup SteamMRM v5.0.1
+# Backup SteamMRM v5.0.2
 import os
 import sys
 import threading
