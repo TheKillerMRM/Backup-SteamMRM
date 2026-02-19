@@ -594,6 +594,29 @@
             };
         }
 
+        async function triggerBackup(btn) {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="caly-spin"><path d="M21 12a9 9 0 11-6.219-8.56"/></svg> ${t('backingUp')}`;
+            btn.disabled = true;
+            try {
+                const res = await fetch(`${API_URL}/backup/create`, { method: 'POST' });
+                const data = await res.json();
+                if (data.status === 'ok') {
+                    const overlay = document.getElementById('caly-overlay');
+                    if (overlay) {
+                        fetchBackups(overlay.querySelector('#caly-list-container'), overlay.querySelector('#caly-usage'));
+                    }
+                } else {
+                    alert(`Error: ${data.message || 'Unknown error'}`);
+                }
+            } catch (e) {
+                alert(`Error: ${e.message}`);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
         async function fetchBackups(container, usageBar) {
             try {
                 const [bRes, sRes] = await Promise.all([fetch(`${API_URL}/list`), fetch(`${API_URL}/settings`)]);

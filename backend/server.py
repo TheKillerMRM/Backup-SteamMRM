@@ -94,7 +94,19 @@ class backupSteamMRMRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
 
     def do_POST(self):
-        if self.path.startswith('/restore/'):
+        if self.path == '/backup/create':
+            self.send_response(200)
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            try:
+                from monitor import create_backup
+                result = create_backup(trigger="manual")
+                self.wfile.write(json.dumps({"status": "ok", "success": result}).encode())
+            except Exception as e:
+                self.wfile.write(json.dumps({"status": "error", "message": str(e)}).encode())
+
+        elif self.path.startswith('/restore/'):
             backup_name = self.path.replace('/restore/', '')
             backup_name = urllib.parse.unquote(backup_name)
             
