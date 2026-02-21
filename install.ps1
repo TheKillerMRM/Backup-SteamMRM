@@ -55,7 +55,9 @@ if (Test-Path $pluginDir) {
 Write-Host "[*] Baixando Steam Toolkit MRM do GitHub..."
 try {
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    $ProgressPreference = 'SilentlyContinue'
     Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile
+    $ProgressPreference = 'Continue'
 }
 catch {
     Write-Host "ERRO AO BAIXAR: $_" -ForegroundColor Red
@@ -66,7 +68,8 @@ catch {
 Write-Host "[*] Extraindo arquivos..."
 Expand-Archive -Path $zipFile -DestinationPath "$env:TEMP\Steam Toolkit MRM_Temp" -Force
 
-$sourceDir = "$env:TEMP\Steam Toolkit MRM_Temp\Backup-SteamMRM-main"
+$extFolders = Get-ChildItem -Path "$env:TEMP\Steam Toolkit MRM_Temp" -Directory
+$sourceDir = $extFolders[0].FullName
 
 if (-not (Test-Path "$steamPath\plugins")) {
     New-Item -ItemType Directory -Force -Path "$steamPath\plugins" | Out-Null
