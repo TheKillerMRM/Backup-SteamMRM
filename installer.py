@@ -16,7 +16,7 @@ from tkinter import filedialog, ttk
 APP_NAME = "Steam Toolkit MRM"
 VERSION  = "v5.0.2"
 PLUGIN_FOLDER = "Steam Toolkit MRM"
-ASSETS = ['backend', 'public', 'ludusavi', 'main.py', 'plugin.json', 'settings.json']
+ASSETS = ['backend', 'public', 'ludusavi', 'SteamAutoCrack', 'main.py', 'plugin.json', 'settings.json']
 
 # ─── COLOURS ─────────────────────────────────────────────────────────
 BG        = "#0e0e12"
