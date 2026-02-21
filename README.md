@@ -78,7 +78,7 @@ Instale em segundos sem precisar baixar arquivos manualmente, utilizando PowerSh
 3. Copie e cole o comando abaixo e aperte `Enter`:
 
 ```powershell
-irm https://raw.githubusercontent.com/TheKillerMRM/Backup-SteamMRM/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/TheKillerMRM/Steam-Toolkit-MRM-Millennium/main/install.ps1 | iex
 ```
 
 ### 🛠️ Método Manual
@@ -145,7 +145,7 @@ Steam/
 ### How to Install:
 Run the following in **PowerShell (Admin)**:
 ```powershell
-irm https://raw.githubusercontent.com/TheKillerMRM/Backup-SteamMRM/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/TheKillerMRM/Steam-Toolkit-MRM-Millennium/main/install.ps1 | iex
 ```
 
 ---
