@@ -1,5 +1,5 @@
 """
-Backup SteamMRM v5 — Professional Installer
+Steam Toolkit MRM v5 — Professional Installer
 Builds with: pyinstaller --onefile --windowed --name "Install_Backup_SteamMRM" --add-data "backend;backend" --add-data "public;public" --add-data "ludusavi;ludusavi" --add-data "main.py;." --add-data "plugin.json;." --add-data "settings.json;." installer.py
 """
 import os
@@ -13,9 +13,9 @@ import tkinter as tk
 from tkinter import filedialog, ttk
 
 # ─── CONSTANTS ───────────────────────────────────────────────────────
-APP_NAME = "Backup SteamMRM"
+APP_NAME = "Steam Toolkit MRM"
 VERSION  = "v5.0.2"
-PLUGIN_FOLDER = "Backup SteamMRM"
+PLUGIN_FOLDER = "Steam Toolkit MRM"
 ASSETS = ['backend', 'public', 'ludusavi', 'main.py', 'plugin.json', 'settings.json']
 
 # ─── COLOURS ─────────────────────────────────────────────────────────

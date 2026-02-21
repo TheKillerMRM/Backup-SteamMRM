@@ -15,7 +15,7 @@ def log(msg):
         root = os.path.dirname(os.path.abspath(__file__))
         with open(os.path.join(root, "caly_debug.log"), "a", encoding="utf-8") as f:
             f.write(f"[{threading.current_thread().name}] {msg}\n")
-        print(f"[backup SteamMRM] {msg}")
+        print(f"[Steam Toolkit MRM] {msg}")
     except:
         pass
 

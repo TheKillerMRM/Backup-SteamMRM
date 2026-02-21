@@ -1,4 +1,4 @@
-# 🚀 Backup SteamMRM v5 — O Derradeiro Update
+# 🚀 Steam Toolkit MRM v5 — O Derradeiro Update
 
 Esta versão marca a maior reformulação do projeto até à data, focada em **Design, Usabilidade e Estabilidade**.
 

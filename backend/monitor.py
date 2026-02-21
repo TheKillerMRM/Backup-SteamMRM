@@ -31,7 +31,7 @@ def create_backup(trigger="auto"):
     dest_folder = os.path.join(config.BACKUP_ROOT, folder_name)
     
     success_count = 0
-    print(f"[backup SteamMRM] Iniciando backup ({trigger}) em: {dest_folder}")
+    print(f"[Steam Toolkit MRM] Iniciando backup ({trigger}) em: {dest_folder}")
 
     for target in BACKUP_TARGETS:
         src = target["src"]
@@ -47,9 +47,9 @@ def create_backup(trigger="auto"):
                 
                 success_count += 1
             else:
-                print(f"[backup SteamMRM] ALERTA: Pasta não encontrada: {src}")
+                print(f"[Steam Toolkit MRM] ALERTA: Pasta não encontrada: {src}")
         except Exception as e:
-            print(f"[backup SteamMRM] Erro ao copiar {target['name']}: {e}")
+            print(f"[Steam Toolkit MRM] Erro ao copiar {target['name']}: {e}")
 
     if success_count > 0:
         # Salvar metadados iniciais
@@ -59,7 +59,7 @@ def create_backup(trigger="auto"):
         except: pass
 
         msg = "Backup realizado com sucesso." if trigger == "manual" else "Backup automático realizado."
-        show_notification("Backup SteamMRM", msg)
+        show_notification("Steam Toolkit MRM", msg)
         
         # Auto-Cleanup: Limite Dinâmico
         # Pule se o backup foi manual? Geralmente sim, ou mantém a regra global.
@@ -105,10 +105,10 @@ def perform_cleanup():
             
             while len(backups) > limit:
                 oldest_backup = backups.pop(0)
-                print(f"[backup SteamMRM] Auto-Cleanup: Removendo backup antigo {oldest_backup}")
+                print(f"[Steam Toolkit MRM] Auto-Cleanup: Removendo backup antigo {oldest_backup}")
                 shutil.rmtree(oldest_backup)
     except Exception as e:
-        print(f"[backup SteamMRM] Erro no Auto-Cleanup: {e}")
+        print(f"[Steam Toolkit MRM] Erro no Auto-Cleanup: {e}")
 
 class BackupManager(threading.Thread):
     def __init__(self):
@@ -121,12 +121,12 @@ class BackupManager(threading.Thread):
         self.running = False
 
     def run(self):
-        print("[backup SteamMRM] Monitor ativo.")
+        print("[Steam Toolkit MRM] Monitor ativo.")
         while self.running:
             current_appid = get_running_appid()
 
             if self.was_running and current_appid == 0:
-                print("[Backup SteamMRM] Jogo fechado. Iniciando protocolo de backup...")
+                print("[Steam Toolkit MRM] Jogo fechado. Iniciando protocolo de backup...")
                 time.sleep(5) 
                 create_backup(trigger="auto")
                 self.was_running = False

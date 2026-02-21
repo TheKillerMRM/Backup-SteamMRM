@@ -35,9 +35,9 @@ if (-not (Test-Path "$steamPath\steam.exe")) {
     exit
 }
 
-$pluginDir = "$steamPath\plugins\Backup SteamMRM"
+$pluginDir = "$steamPath\plugins\Steam Toolkit MRM"
 $zipUrl = "https://github.com/TheKillerMRM/Backup-SteamMRM/archive/refs/heads/main.zip"
-$zipFile = "$env:TEMP\Backup SteamMRM.zip"
+$zipFile = "$env:TEMP\Steam Toolkit MRM.zip"
 
 Write-Host " "
 Write-Host "Local Confirmado: $steamPath" -ForegroundColor Green
@@ -52,7 +52,7 @@ if (Test-Path $pluginDir) {
     Remove-Item -Path $pluginDir -Recurse -Force -ErrorAction Stop
 }
 
-Write-Host "[*] Baixando Backup SteamMRM do GitHub..."
+Write-Host "[*] Baixando Steam Toolkit MRM do GitHub..."
 try {
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile
@@ -64,9 +64,9 @@ catch {
 }
 
 Write-Host "[*] Extraindo arquivos..."
-Expand-Archive -Path $zipFile -DestinationPath "$env:TEMP\Backup SteamMRM_Temp" -Force
+Expand-Archive -Path $zipFile -DestinationPath "$env:TEMP\Steam Toolkit MRM_Temp" -Force
 
-$sourceDir = "$env:TEMP\Backup SteamMRM_Temp\Backup-SteamMRM-main"
+$sourceDir = "$env:TEMP\Steam Toolkit MRM_Temp\Backup-SteamMRM-main"
 
 if (-not (Test-Path "$steamPath\plugins")) {
     New-Item -ItemType Directory -Force -Path "$steamPath\plugins" | Out-Null
@@ -76,11 +76,11 @@ New-Item -ItemType Directory -Force -Path $pluginDir | Out-Null
 Copy-Item -Path "$sourceDir\*" -Destination $pluginDir -Recurse -Force
 
 Remove-Item $zipFile -Force
-Remove-Item "$env:TEMP\Backup SteamMRM_Temp" -Recurse -Force
+Remove-Item "$env:TEMP\Steam Toolkit MRM_Temp" -Recurse -Force
 
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Magenta
-Write-Host "   Backup SteamMRM v5 INSTALADO COM SUCESSO! 💜" -ForegroundColor Magenta
+Write-Host "   Steam Toolkit MRM v5 INSTALADO COM SUCESSO! 💜" -ForegroundColor Magenta
 Write-Host "============================================"
 Write-Host "Local: $pluginDir"
 

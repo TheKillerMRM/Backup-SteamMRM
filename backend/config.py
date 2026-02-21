@@ -8,7 +8,7 @@ def get_steam_path():
         winreg.CloseKey(key)
         return path.replace("/", "\\")
     except Exception as e:
-        print(f"[backup SteamMRM] Erro ao buscar SteamPath no registro: {e}")
+        print(f"[Steam Toolkit MRM] Erro ao buscar SteamPath no registro: {e}")
         # Fallback para pastas padrão comuns se o registro falhar
         paths = [
             r"C:\Program Files (x86)\Steam",
@@ -34,7 +34,7 @@ def get_backup_root():
                 if custom_path and os.path.exists(custom_path):
                     return custom_path
     except Exception as e:
-        print(f"[backup SteamMRM] Erro ao ler backup_path: {e}")
+        print(f"[Steam Toolkit MRM] Erro ao ler backup_path: {e}")
     
     # Default path
     path = os.path.join(MILLENNIUM_PATH, "backups")
@@ -55,7 +55,7 @@ BACKUP_TARGETS = [
 ]
 
 UI_THEME = {
-    "title": "Backup SteamMRM v5",
+    "title": "Steam Toolkit MRM v5",
     "bg": "#101014",
     "accent": "#8b5cf6"
 }

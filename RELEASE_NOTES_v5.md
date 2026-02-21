@@ -1,6 +1,6 @@
-# 🚀 Backup SteamMRM v5.0.0
+# 🚀 Steam Toolkit MRM v5.0.0
 
-A maior atualização do Backup SteamMRM até agora! Interface completamente redesenhada, novas funcionalidades de gestão de backups e melhorias de estabilidade.
+A maior atualização do Steam Toolkit MRM até agora! Interface completamente redesenhada, novas funcionalidades de gestão de backups e melhorias de estabilidade.
 
 ---
 

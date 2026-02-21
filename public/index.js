@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    console.log("[backup SteamMRM] Script carregado!");
+    console.log("[Steam Toolkit MRM] Script carregado!");
 
     try {
         const API_URL = "http://localhost:9999";
@@ -17,18 +17,19 @@
             ];
 
             // Bloqueia expressamente: Pesquisa, Fóruns, Pontos, Inventário, Perfil, etc
+            // NOTA: store.steampowered.com/app/ NÃO está bloqueado para que o botão OnlineFix funcione
             const blocks = [
                 "/search", "/discussions", "/points", "/inventory", "/profiles/",
-                "store.steampowered.com/app/", "store.steampowered.com/sub/", "store.steampowered.com/bundle/"
+                "store.steampowered.com/sub/", "store.steampowered.com/bundle/"
             ];
 
             const isAllowed = allows.some(a => url.includes(a)) || url === "about:blank";
             const isBlocked = blocks.some(b => url.includes(b));
 
-            // Especial: Garantir que na loja seja APENAS a home
+            // Especial: Lojas de jogo (/app/) são permitidas; apenas a home e páginas de app
             if (url.includes("store.steampowered.com")) {
                 const path = window.location.pathname;
-                return path === "/" || path === "" || path.includes("/home");
+                return path === "/" || path === "" || path.includes("/home") || path.startsWith("/app/");
             }
 
             return isAllowed && !isBlocked;
@@ -40,7 +41,7 @@
         // Dicionário de Traduções
         const TRANSLATIONS = {
             "pt": {
-                title: "Backup SteamMRM v5",
+                title: "Steam Toolkit MRM v5",
                 config: "Configurações",
                 refresh: "Atualizar",
                 scanner: "Scanner",
@@ -51,7 +52,7 @@
                 save: "Salvar",
                 loading: "Carregando...",
                 noBackups: "Nenhum backup encontrado.",
-                poweredByText: "Backend",
+                poweredByText: "Agradecimentos a",
                 byText: "dev",
                 universalEngine: "Universal Engine",
                 restore: "Restaurar",
@@ -80,11 +81,25 @@
                 unpin: "Desafixar",
                 rename: "Renomear",
                 renamePrompt: "Novo nome para o backup:",
+                renameSave: "Guardar",
+                renameCancel: "Cancelar",
+                pinnedError: "Este backup está fixado e não pode ser eliminado.",
                 history: "Histórico",
-                pinned: "Fixado"
+                pinned: "Fixado",
+                openSteamAutoCrack: "Abrir SteamAutoCrack",
+                steamAutoCrackWarningTitle: "Aviso de Risco SteamAutoCrack",
+                steamAutoCrackWarningDesc: "Este programa modifica executáveis de jogos e pode corromper a instalação. Use por sua conta e risco.\n\n⚠️ O AUTOR DESTE PLUGIN NÃO SE RESPONSABILIZA POR ABSOLUTAMENTE NADA QUE ACONTEÇA COM O SEU COMPUTADOR, JOGOS OU CONTA. ⚠️",
+                steamAutoCrackTutorial: "1. Selecione o executável ou a pasta do jogo.\n2. Escolha as opções de crack (os padrões geralmente funcionam).\n3. Vá ao site <span onclick=\"window.calyOpenExternal('https://steamdb.info/')\" style=\"color:#3b82f6; cursor:pointer; font-weight:bold;\">https://steamdb.info/</span>, pesquise o nome do jogo, entre na página, copie o App ID e cole onde é solicitado no programa.\n4. Clique em 'Crack' e aguarde a conclusão.\n5. Depois é só Jogar.",
+                steamAutoCrackAccept: "Li e Aceito (Abrir)",
+                steamAutoCrackCancel: "Cancelar",
+                steamAutoCrackSupport: "Suporte (GitHub)",
+                fixSearching: "A procurar Fix Multijogador...",
+                fixAvailable: "Fix Multijogador Disponível!",
+                fixNotFound: "Sem Fix Online",
+                fixOpened: "Aberto no Navegador!"
             },
             "en": {
-                title: "Backup SteamMRM v5",
+                title: "Steam Toolkit MRM v5",
                 config: "Settings",
                 refresh: "Refresh",
                 scanner: "Scanner",
@@ -95,7 +110,7 @@
                 save: "Save",
                 loading: "Loading...",
                 noBackups: "No backups found.",
-                poweredByText: "Backend",
+                poweredByText: "Thanks to",
                 byText: "dev",
                 universalEngine: "Universal Engine",
                 restore: "Restore",
@@ -124,8 +139,22 @@
                 unpin: "Unpin",
                 rename: "Rename",
                 renamePrompt: "New name for backup:",
+                renameSave: "Save",
+                renameCancel: "Cancel",
+                pinnedError: "This backup is pinned and cannot be deleted.",
                 history: "History",
-                pinned: "Pinned"
+                pinned: "Pinned",
+                openSteamAutoCrack: "Open SteamAutoCrack",
+                steamAutoCrackWarningTitle: "SteamAutoCrack Risk Warning",
+                steamAutoCrackWarningDesc: "This program modifies game executables and might corrupt the installation. Use at your own risk.\n\n⚠️ THE AUTHOR OF THIS PLUGIN IS NOT RESPONSIBLE FOR ABSOLUTELY ANYTHING THAT HAPPENS TO YOUR COMPUTER, GAMES, OR ACCOUNT. ⚠️",
+                steamAutoCrackTutorial: "1. Select the game's executable or folder.\n2. Choose crack options (defaults are usually fine).\n3. Go to <span onclick=\"window.calyOpenExternal('https://steamdb.info/')\" style=\"color:#3b82f6; cursor:pointer; font-weight:bold;\">https://steamdb.info/</span>, search for the game, copy the App ID and paste it in the program.\n4. Click 'Crack' and wait for completion.\n5. Then just Play.",
+                steamAutoCrackAccept: "I Read and Accept (Open)",
+                steamAutoCrackCancel: "Cancel",
+                steamAutoCrackSupport: "Support (GitHub)",
+                fixSearching: "Searching for Multiplayer Fix...",
+                fixAvailable: "Multiplayer Fix Available!",
+                fixNotFound: "No Online Fix Found",
+                fixOpened: "Opened in Browser!"
             }
         };
 
@@ -319,11 +348,48 @@
                 .caly-config-label { font-size: 13px; font-weight: 500; color: #d4d4d8; }
                 
                 .caly-preset-container { display: flex; gap: 8px; align-items: center; }
+                
+                .caly-select {
+                    background: #27272a; border: 1px solid rgba(255,255,255,0.1); color: #fff;
+                    padding: 4px 8px; border-radius: 6px; font-size: 13px; outline: none;
+                    transition: border-color 0.2s; cursor: pointer; max-width: 250px;
+                }
+                .caly-select:focus { border-color: var(--caly-primary); }
                 .caly-preset-circle { 
                     width: 20px; height: 20px; border-radius: 50%; cursor: pointer; border: 2px solid transparent;
                     transition: transform 0.2s;
                 }
                 .caly-preset-circle.selected { border-color: #fff; transform: scale(1.1); }
+
+                /* === Botão OnlineFix === */
+                #mrm-onlinefix-btn {
+                    display: inline-flex; align-items: center; gap: 8px;
+                    padding: 10px 18px; border-radius: 3px; font-size: 15px;
+                    font-weight: 600; font-family: "Motiva Sans", Arial, sans-serif;
+                    border: none; cursor: not-allowed; transition: all 0.25s ease;
+                    text-transform: uppercase; letter-spacing: 0.5px;
+                    margin-top: 8px; width: 100%; justify-content: center;
+                }
+                #mrm-onlinefix-btn.of-loading {
+                    background: #4b545c; color: #8f98a0; cursor: not-allowed;
+                }
+                #mrm-onlinefix-btn.of-found {
+                    background: linear-gradient(to bottom, #82cc5d, #5c9933);
+                    color: #fff; cursor: pointer; box-shadow: 0 0 8px rgba(130,204,93,0.4);
+                }
+                #mrm-onlinefix-btn.of-found:hover {
+                    background: linear-gradient(to bottom, #95dd6a, #6ab043);
+                    box-shadow: 0 0 14px rgba(130,204,93,0.6);
+                }
+                #mrm-onlinefix-btn.of-notfound {
+                    background: #3a3a3a; color: #6b6b6b; cursor: not-allowed;
+                }
+                @keyframes mrmPulse {
+                    0%,100% { box-shadow: 0 0 8px rgba(130,204,93,0.4); }
+                    50%      { box-shadow: 0 0 18px rgba(130,204,93,0.8); }
+                }
+                #mrm-onlinefix-btn.of-found { animation: mrmPulse 2s ease-in-out infinite; }
+                #mrm-onlinefix-btn.of-found:hover { animation: none; }
             `;
             document.head.appendChild(style);
         }
@@ -339,6 +405,35 @@
             fab.onclick = showRestoreModal;
             document.body.appendChild(fab);
         }
+
+        window.calyOpenExternal = function (url) {
+            fetch(`${API_URL}/open_url`, {
+                method: 'POST',
+                body: JSON.stringify({ url })
+            }).catch(e => console.error("[Steam Toolkit MRM] Erro ao abrir link externo:", e));
+
+            // Feedback visual universal para qualquer link clicado
+            try {
+                if (window.event) {
+                    var target = window.event.target || window.event.srcElement;
+                    if (target) {
+                        var el = target.nodeType === 3 ? target.parentNode : target;
+                        if (el && !el.dataset.opened) {
+                            var originalHtml = el.innerHTML;
+                            var msg = t('fixOpened') || "Aberto no Navegador!";
+                            el.dataset.opened = "true";
+                            el.innerHTML = originalHtml + ' <span style="font-size:0.85em; opacity:0.9; color:#fff; font-weight:normal; margin-left:4px;">(' + msg + ')</span>';
+                            el.style.opacity = '0.7';
+                            setTimeout(function () {
+                                el.innerHTML = originalHtml;
+                                el.style.opacity = '1';
+                                delete el.dataset.opened;
+                            }, 3000);
+                        }
+                    }
+                }
+            } catch (err) { }
+        };
 
         function removeOverlay() {
             const existing = document.querySelector('.caly-overlay');
@@ -366,7 +461,10 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
                             </button>
                              <button class="caly-btn" id="caly-open-ludusavi" title="${t('openLudusavi')}">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+                             </button>
+                             <button class="caly-btn" id="caly-open-sac" title="${t('openSteamAutoCrack')}" style="background:#ef4444; margin-left:8px;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                              </button>
                              <div style="width:1px; height:18px; background:rgba(255,255,255,0.1); margin:0 4px;"></div>
                              <div style="cursor:pointer; padding:5px; color:#a1a1aa;" id="caly-close">✕</div>
@@ -396,9 +494,12 @@
                     </div>
                     <div class="caly-storage-bar"><div class="caly-storage-fill" id="caly-usage"></div></div>
                     
-                     <div style="padding: 12px 24px; background: rgba(0,0,0,0.4); border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
-                        <div style="font-size: 10px; color: #64748b;">${t('poweredByText')} <b>Ludusavi</b> &amp; <b>CalyRecall</b></div>
-                        <div style="font-size: 10px; color: #4b5563;">${t('byText')} <span style="color:var(--caly-primary); font-weight:700;">TheKillerMRM</span></div>
+                     <div style="padding: 8px 24px; background: rgba(0,0,0,0.4); border-top: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 4px; align-items: center;">
+                        <div style="font-size: 10px; color: #64748b; text-align:center;">${t('poweredByText')} <b>Ludusavi</b> &amp; <b>CalyRecall</b> &amp; <b>SteamAutoCracks</b></div>
+                        <div style="display:flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <button class="caly-btn-ghost" id="caly-open-recommendations" style="font-size: 10px; padding: 2px 6px; height: auto;">Recomendações</button>
+                            <div style="font-size: 10px; color: #4b5563;">${t('byText')} <span style="color:var(--caly-primary); font-weight:700;">TheKillerMRM</span></div>
+                        </div>
                     </div>
                </div>
             `;
@@ -422,6 +523,8 @@
                     renderConfigView(overlay.querySelector('#caly-config-container'), overlay);
                 } else {
                     overlay.querySelector('#caly-toggle-view').classList.remove('active');
+                    // Limpa o painel de config para que a altura colapse de volta
+                    setTimeout(() => { overlay.querySelector('#caly-config-container').innerHTML = ''; }, 300);
                 }
             };
 
@@ -429,9 +532,11 @@
                 const btn = overlay.querySelector('#caly-refresh');
                 const svg = btn.querySelector('svg');
                 svg.classList.add('caly-spin');
-                fetchBackups(overlay.querySelector('#caly-list-container'), overlay.querySelector('#caly-usage')).finally(() => {
-                    setTimeout(() => svg.classList.remove('caly-spin'), 500);
-                });
+                // Refresh completo: fecha e reabre o modal do zero (corrige qualquer estado inválido)
+                setTimeout(() => {
+                    removeOverlay();
+                    showRestoreModal();
+                }, 300);
             };
 
             overlay.querySelector('#caly-open-folder').onclick = () => {
@@ -444,6 +549,89 @@
                 fetch(`${API_URL}/ludusavi/open`, { method: 'POST' }).then(r => r.json()).then(data => {
                     // Handle response if needed
                 });
+            };
+
+            overlay.querySelector('#caly-open-sac').onclick = () => {
+                const sacOverlay = document.createElement('div');
+                sacOverlay.className = 'caly-overlay';
+                sacOverlay.style.zIndex = '10001';
+                sacOverlay.innerHTML = `
+                    <div class="caly-modal">
+                        <div class="caly-header" style="border-bottom:1px solid #ef4444;">
+                            <div class="caly-title" style="color:#ef4444;">⚠️ ${t('steamAutoCrackWarningTitle')} ⚠️</div>
+                            <div style="cursor:pointer; padding:5px; color:#a1a1aa;" id="caly-sac-close">✕</div>
+                        </div>
+                        <div class="caly-body">
+                            <div style="padding:24px; white-space:pre-wrap; font-size:14px; color:#d4d4d8; line-height:1.6;">${t('steamAutoCrackWarningDesc')}
+                            
+<b style="color:#ef4444;">Tutorial:</b>
+${t('steamAutoCrackTutorial')}</div>
+                            <div style="padding: 16px 24px; display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(255,255,255,0.05); background:#18181b;">
+                                <div>
+                                    <button class="caly-btn-ghost" id="caly-sac-support" style="color:#64748b; font-size:12px;">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                        ${t('steamAutoCrackSupport')}
+                                    </button>
+                                </div>
+                                <div style="display:flex; gap:10px;">
+                                    <button class="caly-btn-ghost" id="caly-sac-cancel">${t('steamAutoCrackCancel')}</button>
+                                    <button class="caly-btn" style="background:#ef4444;" id="caly-sac-accept">${t('steamAutoCrackAccept')}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(sacOverlay);
+
+                const removeSacModal = () => sacOverlay.remove();
+
+                sacOverlay.onclick = (e) => { if (e.target === sacOverlay) removeSacModal(); };
+                sacOverlay.querySelector('#caly-sac-close').onclick = removeSacModal;
+                sacOverlay.querySelector('#caly-sac-cancel').onclick = removeSacModal;
+
+                sacOverlay.querySelector('#caly-sac-support').onclick = () => {
+                    window.calyOpenExternal('https://github.com/SteamAutoCracks/Steam-auto-crack');
+                };
+
+                sacOverlay.querySelector('#caly-sac-accept').onclick = () => {
+                    removeSacModal();
+                    fetch(`${API_URL}/steamautocrack/open`, { method: 'POST' }).then(r => r.json()).then(data => {
+                        if (data.status === 'not_found') alert("SteamAutoCrack não encontrado. Verifique se o executável existe.");
+                    });
+                };
+            };
+
+            overlay.querySelector('#caly-open-recommendations').onclick = () => {
+                const recOverlay = document.createElement('div');
+                recOverlay.className = 'caly-overlay';
+                recOverlay.style.zIndex = '10001';
+                recOverlay.innerHTML = `
+                    <div class="caly-modal">
+                        <div class="caly-header">
+                            <div class="caly-title">Recomendações e Avisos</div>
+                            <div style="cursor:pointer; padding:5px; color:#a1a1aa;" id="caly-rec-close">✕</div>
+                        </div>
+                        <div class="caly-body">
+                            <div style="padding:24px; font-size:14px; color:#d4d4d8; line-height:1.6;">
+                                <p>O desenvolvimento deste plugin foi pensado para ser usado com o <span onclick="window.calyOpenExternal('https://www.steamtools.net/')" style="color:#3b82f6; text-decoration:none; font-weight:bold; cursor:pointer;">Steam tools</span>.</p>
+                                <p style="color:#94a3b8; font-size:12px; margin-bottom:16px;">⚠️ Aviso: Nem o criador deste plugin nem o Steam tools dão suporte um ao outro.</p>
+                                
+                                <hr style="border:0; border-top:1px solid rgba(255,255,255,0.05); margin:16px 0;">
+                                
+                                <p>Este plugin também foi pensado para ser usado com outro plugin, o <span onclick="window.calyOpenExternal('https://github.com/madoiscool/ltsteamplugin')" style="color:#3b82f6; text-decoration:none; font-weight:bold; cursor:pointer;">lua tools</span>.</p>
+                                <p style="color:#94a3b8; font-size:12px; margin-bottom:16px;">⚠️ Aviso: O dono do Steam Toolkit MRM não dá suporte ao plugin lua tools e o lua tools não dá suporte ao Steam Toolkit MRM.</p>
+                                
+                                <br>
+                                <p>Comunidade exclusiva do lua tools: <span onclick="window.calyOpenExternal('https://discord.gg/luatools')" style="color:#3b82f6; text-decoration:none; font-weight:bold; cursor:pointer;">discord lua tools</span></p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(recOverlay);
+
+                const removeRecModal = () => recOverlay.remove();
+                recOverlay.onclick = (e) => { if (e.target === recOverlay) removeRecModal(); };
+                recOverlay.querySelector('#caly-rec-close').onclick = removeRecModal;
             };
 
             fetchBackups(overlay.querySelector('#caly-list-container'), overlay.querySelector('#caly-usage'));
@@ -701,18 +889,57 @@
             } catch (e) { alert(t('connectionError') + e); }
         }
 
-        async function triggerRename(folder, currentName) {
-            const newName = prompt(t('renamePrompt'), currentName || "");
-            if (newName === null) return; // Cancelled
+        function triggerRename(folder, currentName) {
+            // Usar modal próprio pois prompt() pode ser bloqueado no contexto do Millennium/Steam
+            const existingRenameModal = document.getElementById('caly-rename-modal-overlay');
+            if (existingRenameModal) existingRenameModal.remove();
 
-            try {
-                await fetch(`${API_URL}/backups/update_meta`, {
-                    method: 'POST',
-                    body: JSON.stringify({ folder: folder, custom_name: newName })
-                });
-                const overlay = document.querySelector('.caly-overlay');
-                if (overlay) fetchBackups(overlay.querySelector('#caly-list-container'), overlay.querySelector('#caly-usage'));
-            } catch (e) { alert(t('connectionError') + e); }
+            const renameOverlay = document.createElement('div');
+            renameOverlay.id = 'caly-rename-modal-overlay';
+            renameOverlay.className = 'caly-overlay';
+            renameOverlay.style.zIndex = '10002';
+            renameOverlay.innerHTML = `
+                <div class="caly-modal" style="width:400px;">
+                    <div class="caly-header">
+                        <div class="caly-title">${t('rename')}</div>
+                        <div style="cursor:pointer; padding:5px; color:#a1a1aa;" id="caly-rename-close">✕</div>
+                    </div>
+                    <div style="padding:20px; display:flex; flex-direction:column; gap:12px; background:#18181b;">
+                        <label style="font-size:13px; color:#a1a1aa;">${t('renamePrompt')}</label>
+                        <input id="caly-rename-input" class="caly-input" type="text" value="${(currentName || '').replace(/"/g, '&quot;')}" placeholder="" />
+                        <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:4px;">
+                            <button class="caly-btn-ghost" id="caly-rename-cancel">${t('renameCancel')}</button>
+                            <button class="caly-btn" id="caly-rename-save">${t('renameSave')}</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(renameOverlay);
+
+            const input = renameOverlay.querySelector('#caly-rename-input');
+            // Focar e selecionar tudo no input
+            setTimeout(() => { input.focus(); input.select(); }, 50);
+
+            const closeRenameModal = () => renameOverlay.remove();
+
+            const doRename = async () => {
+                const newName = input.value.trim();
+                closeRenameModal();
+                try {
+                    await fetch(`${API_URL}/backups/update_meta`, {
+                        method: 'POST',
+                        body: JSON.stringify({ folder: folder, custom_name: newName })
+                    });
+                    const overlay = document.querySelector('.caly-overlay');
+                    if (overlay) fetchBackups(overlay.querySelector('#caly-list-container'), overlay.querySelector('#caly-usage'));
+                } catch (e) { alert(t('connectionError') + e); }
+            };
+
+            renameOverlay.querySelector('#caly-rename-close').onclick = closeRenameModal;
+            renameOverlay.querySelector('#caly-rename-cancel').onclick = closeRenameModal;
+            renameOverlay.querySelector('#caly-rename-save').onclick = doRename;
+            // Guardar ao pressionar Enter
+            input.addEventListener('keydown', (e) => { if (e.key === 'Enter') doRename(); if (e.key === 'Escape') closeRenameModal(); });
         }
 
         async function triggerRestore(folder, btn, item) {
@@ -747,8 +974,17 @@
                         if (overlay) fetchBackups(overlay.querySelector('#caly-list-container'), overlay.querySelector('#caly-usage'));
                     }, 300);
                 } else {
-                    const data = await response.json();
-                    alert(data.message || t('connectionError'));
+                    let errorMsg = t('connectionError');
+                    try {
+                        const data = await response.json();
+                        // Traduzir mensagem de backup fixado
+                        if (data.message === 'Backup is pinned') {
+                            errorMsg = t('pinnedError');
+                        } else {
+                            errorMsg = data.message || errorMsg;
+                        }
+                    } catch (_) { }
+                    alert(errorMsg);
                     btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
                     btn.disabled = false;
                 }
@@ -780,8 +1016,210 @@
             overlay.querySelector('#caly-ok-btn').onclick = removeOverlay;
         }
 
-        const init = () => { if (document.body) { createFloatingButton(); checkStartupStatus(); } else { setTimeout(init, 500); } };
+        // ===================================================================
+        // MÓDULO: Botão "Fix Multijogador" em páginas de jogo da Steam
+        // ===================================================================
+
+        var searchCache = {}; // Armazena { status: 'loading'|'found'|'notfound', url: string|null }
+
+        function renderButtonState(btn, cacheEntry) {
+            if (!cacheEntry || cacheEntry.status === 'loading') {
+                btn.className = 'of-loading';
+                btn.disabled = true;
+                btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:calySpin 1s linear infinite"><path d="M21 12a9 9 0 11-6.219-8.56"/></svg> ' + t('fixSearching');
+                btn.onclick = null;
+            } else if (cacheEntry.status === 'found') {
+                btn.className = 'of-found';
+                btn.disabled = false;
+                var defaultHtml = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> ' + t('fixAvailable');
+                var clickedHtml = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> ' + t('fixOpened');
+
+                btn.innerHTML = defaultHtml;
+                btn.onclick = function () {
+                    window.calyOpenExternal(cacheEntry.url);
+                    btn.innerHTML = clickedHtml;
+                    btn.style.opacity = '0.7';
+                    // Reverte após 3 segundos
+                    setTimeout(function () {
+                        if (document.getElementById('mrm-onlinefix-btn') === btn) {
+                            btn.innerHTML = defaultHtml;
+                            btn.style.opacity = '1';
+                        }
+                    }, 3000);
+                };
+            } else {
+                btn.className = 'of-notfound';
+                btn.disabled = true;
+                btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> ' + t('fixNotFound');
+                btn.onclick = null;
+            }
+        }
+
+        function triggerSearch(rawGameName) {
+            if (searchCache[rawGameName]) return; // Já iniciou pesquisa ou concluiu
+
+            searchCache[rawGameName] = { status: 'loading', url: null };
+            console.log('[SteamMRM] OnlineFix: iniciando pesquisa -> ' + rawGameName);
+
+            var url = API_URL + '/onlinefix/search';
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.timeout = 30000; // 30 segundos
+
+            function pushStateToDOM() {
+                var btn = document.getElementById('mrm-onlinefix-btn');
+                var titleEl = document.getElementById('appHubAppName') || document.querySelector('.apphub_AppName');
+                if (btn && titleEl) {
+                    var currentName = (titleEl.textContent || titleEl.innerText || '').trim();
+                    if (currentName === rawGameName) {
+                        renderButtonState(btn, searchCache[rawGameName]);
+                    }
+                }
+            }
+
+            xhr.onload = function () {
+                console.log('[SteamMRM] OnlineFix: HTTP ' + xhr.status + ' resposta=' + xhr.responseText.substring(0, 100));
+                try {
+                    var data = JSON.parse(xhr.responseText);
+                    if (data.found && data.url) {
+                        searchCache[rawGameName] = { status: 'found', url: data.url };
+                    } else {
+                        searchCache[rawGameName] = { status: 'notfound', url: null };
+                    }
+                } catch (e) {
+                    searchCache[rawGameName] = { status: 'notfound', url: null };
+                }
+                pushStateToDOM();
+            };
+
+            xhr.onerror = function () { searchCache[rawGameName] = { status: 'notfound', url: null }; pushStateToDOM(); };
+            xhr.ontimeout = function () { searchCache[rawGameName] = { status: 'notfound', url: null }; pushStateToDOM(); };
+            xhr.onabort = function () { searchCache[rawGameName] = { status: 'notfound', url: null }; pushStateToDOM(); };
+
+            var body = JSON.stringify({ game_name: rawGameName });
+            xhr.send(body);
+        }
+
+        function injectOnlineFixButton(rawGameName) {
+            if (document.getElementById('mrm-onlinefix-wrapper')) return;
+            ensureCalyStyles();
+
+            var wrapper = document.createElement('div');
+            wrapper.id = 'mrm-onlinefix-wrapper';
+            wrapper.style.cssText = 'margin-top:8px;width:100%;box-sizing:border-box;';
+
+            var btn = document.createElement('button');
+            btn.id = 'mrm-onlinefix-btn';
+            wrapper.appendChild(btn);
+
+            // Garante que a pesquisa está iniciada
+            triggerSearch(rawGameName);
+            // Renderiza o estado atual (seja loading se acabou de criar, ou found se já existia na cache)
+            renderButtonState(btn, searchCache[rawGameName]);
+
+            var sels = [
+                '.queue_actions_ctn',
+                '#queueActionsCtn',
+                '.game_area_purchase_game_wrapper',
+                '.game_area_purchase',
+                '#game_purchase_action',
+                '.game_purchase_action',
+                '.game_purchase_action_bg',
+                '#buyGameOuterCol',
+                '.game_area_purchase_game',
+                '#appHubAppName'
+            ];
+            var anchor = null;
+            for (var i = 0; i < sels.length; i++) {
+                anchor = document.querySelector(sels[i]);
+                if (anchor) break;
+            }
+            if (!anchor) { console.warn('[SteamMRM] OnlineFix: sem âncora'); return; }
+
+            // Se a âncora for a barra horizontal de "Lista de Desejos", injetamos DENTRO dela
+            if (anchor.classList && anchor.classList.contains('queue_actions_ctn') || anchor.id === 'queueActionsCtn') {
+                wrapper.style.cssText = 'display:inline-block; margin-left:8px; vertical-align:top; width:auto; height:32px;';
+                btn.style.width = 'auto';
+                btn.style.marginTop = '0';
+                btn.style.padding = '0 15px'; // Mais compacto para caber na barra
+                btn.style.fontSize = '12px';
+                btn.style.height = '100%';
+                btn.style.lineHeight = '32px';
+                btn.style.whiteSpace = 'nowrap'; // EVITA QUEBRA DE TEXTO
+
+                // Procurar os botões do lado esquerdo (Desejos, Seguir, Ignorar + setinha)
+                // O último deles costuma ser a setinha do ignorar ou o próprio botão ignorar
+                var leftControls = anchor.querySelectorAll('.wishlist_add_to_wishlist_area, .queue_control_button');
+                if (leftControls.length > 0) {
+                    var lastControl = leftControls[leftControls.length - 1];
+                    lastControl.insertAdjacentElement('afterend', wrapper);
+                } else {
+                    anchor.appendChild(wrapper);
+                }
+            } else {
+                // Comportamento original de fallback (bloco inteiro abaixo da área de compra)
+                anchor.insertAdjacentElement('afterend', wrapper);
+            }
+
+            console.log('[SteamMRM] OnlineFix: botao injetado/re-injetado para ' + rawGameName);
+        }
+
+        function watchStorePages() {
+            var lastGameName = '';
+
+            function tryInject() {
+                var titleEl = document.getElementById('appHubAppName')
+                    || document.querySelector('.apphub_AppName');
+                if (!titleEl) return;
+
+                var rawName = (titleEl.textContent || titleEl.innerText || '').trim();
+                if (!rawName) return;
+
+                if (rawName !== lastGameName) {
+                    lastGameName = rawName;
+                    var old = document.getElementById('mrm-onlinefix-wrapper');
+                    if (old) old.remove();
+                }
+
+                // A grande mudanca: se o botao nao estiver no DOM, INJETA SEMPRE.
+                // O Steam reconstrói a UI dinamicamente. Esta logica garante que nao o perdemos.
+                // O estado visual sera recuperado da cache.
+                if (!document.getElementById('mrm-onlinefix-wrapper')) {
+                    injectOnlineFixButton(rawName);
+                }
+            }
+
+            // Estratégia 1: MutationObserver (mais robusto para re-renders do Steam)
+            try {
+                new MutationObserver(function () {
+                    // Nota: nao verificar !btn aqui, porque tryInject ja lida com isso perfeitamente
+                    tryInject();
+                }).observe(document.documentElement, { childList: true, subtree: true });
+                console.log('[SteamMRM] OnlineFix: MutationObserver ativo.');
+            } catch (e) {
+                console.warn('[SteamMRM] OnlineFix: MutationObserver falhou:', e.message);
+            }
+
+            // Estratégia 2: setInterval como rede de segurança
+            setInterval(tryInject, 2000);
+
+            setTimeout(tryInject, 800);
+        }
+
+        // ===================================================================
+        // INIT
+        // ===================================================================
+        const init = () => {
+            if (document.body) {
+                createFloatingButton();
+                checkStartupStatus();
+                watchStorePages();
+            } else {
+                setTimeout(init, 500);
+            }
+        };
         init();
 
-    } catch (e) { console.error("[backup SteamMRM] Erro frontend:", e); }
+    } catch (e) { console.error("[Steam Toolkit MRM] Erro frontend:", e); }
 })();

@@ -10,7 +10,7 @@ def show_notification(title, message):
         $textNodes = $template.GetElementsByTagName("text");
         $textNodes.Item(0).AppendChild($template.CreateTextNode("{title}")) > $null;
         $textNodes.Item(1).AppendChild($template.CreateTextNode("{message}")) > $null;
-        $notifier = [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("backup SteamMRM");
+        $notifier = [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Steam Toolkit MRM");
         $notification = [Windows.UI.Notifications.ToastNotification]::new($template);
         $notifier.Show($notification);
         """
@@ -18,6 +18,6 @@ def show_notification(title, message):
         try:
             subprocess.run(["powershell", "-Command", ps_script], creationflags=0x08000000)
         except Exception as e:
-            print(f"[Backup SteamMRM] Erro ao enviar notificação: {e}")
+            print(f"[Steam Toolkit MRM] Erro ao enviar notificação: {e}")
 
     threading.Thread(target=_run, daemon=True).start()

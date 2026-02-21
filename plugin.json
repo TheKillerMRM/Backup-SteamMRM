@@ -1,7 +1,7 @@
 {
   "name": "BackupSteamMRM",
-  "common_name": "Backup SteamMRM",
-  "description": "Automação de Backup e Restore Inteligente para Steam",
+  "common_name": "Steam Toolkit MRM",
+  "description": "Ferramenta Multiuso: Backups Inteligentes, SteamAutoCrack e Busca de Fix Online",
   "author": "TheKillerMRM",
   "version": "5.0.2",
   "has_backend": true,
